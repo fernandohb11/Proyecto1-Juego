@@ -55,7 +55,8 @@ var images = {
   bg: './img/bg4.png',
   sprite: './img/Character5.png',
   gameover: './img/gameover.png',
-  bg2:'./img/bg2.png'
+  bg2:'./img/bg2.png',
+  sprite2:'./img/fly.png'
 }
 
 function Board() {
@@ -69,7 +70,7 @@ function Board() {
     this.draw()
   }
   this.draw = () => {
-    /* movimiento del fondo */ this.x -=5
+    /* movimiento del fondo */ this.x -=7
     if(this.x < -this.width) this.x = 0;
     ctx.drawImage(this.img, this.x, this.y, canvas.width, canvas.height)
     ctx.drawImage(this.img, this.x+canvas.width, this.y, canvas.width, canvas.height)}
@@ -87,6 +88,8 @@ function Hero() {
   this.y = 0
   this.wc=100
   this.hc=100
+  this.wf=100
+  this.hf=100
   this.w = 320
   this.aux = 0
   this.h = 245
@@ -100,7 +103,7 @@ function Hero() {
      this.position +=2.02
     if(this.position <1)
        this.position =1
-    ctx.drawImage(this.img, this.x,this.y,this.w, this.h, 120, this.position, 100, 100);
+    ctx.drawImage(this.img, this.x,this.y,this.w, this.h, 120, this.position, this.wf, this.hf);
     if (frames % 4 === 0) {
       this.aux++
       if (this.aux === 9) this.aux = 0
@@ -143,9 +146,6 @@ this.ifTouched = function(item){
   }
 
 }
-
-
-
 
 // comida
 
@@ -198,7 +198,19 @@ function checkCollision(){
       
       if(hero.ifTouched(truck)) {
         if(truck.estado !=="malo"){
-        puntos++
+         //tamaño del pug
+         if(hero.w <=520){
+          hero.w+= 10
+          hero.h+=10
+
+        // tamaño de la ventana
+          hero.wf+=10
+          hero.hf+=10
+          hero.wc+=5
+          hero.hc+=5
+         }
+          puntos++
+        
         console.log(puntos)
         trucks.splice(index,1)
       }else{
@@ -302,7 +314,7 @@ function gameover(){
     ctx.drawImage(gamoim,500,200,200,200)
     ctx.font = "30px Arial";
         ctx.fillText("Tu puntaje fue:"+" "+puntos+" "+"puntos!",430,220)
-        ctx.fillText("¡Lolo tiene mas hambre!",450,400); 
+        ctx.fillText("¡Lolo tiene más hambre!",450,400); 
         ctx.fillText("Presiona Enter para jugar otra vez",380,460); 
 
     
@@ -315,7 +327,7 @@ function gameover(){
 
 addEventListener('keydown', (e) => {
   if (e.keyCode === 32)
-  hero.position -= 50
+  hero.position -= 30
   
   })
 
