@@ -301,6 +301,7 @@ function gameover(){
     hero.drawMuerto()
     ctx.drawImage(gamoim,500,200,200,200)
     ctx.font = "30px Arial";
+        ctx.fillText("Tu puntaje fue:"+" "+puntos+" "+"puntos!",430,220)
         ctx.fillText("¡Lolo tiene mas hambre!",450,400); 
         ctx.fillText("Presiona Enter para jugar otra vez",380,460); 
 
