@@ -1,4 +1,6 @@
 var canvas = document.getElementById('canvas');
+var x = document.getElementById("myAudio");
+var song2= document.getElementById("song2");
 var ctx = canvas.getContext('2d');
 var interval = null;
 var frames = 0;
@@ -51,7 +53,8 @@ var food= [ 'img/food/milkshake.png',
 ]
 var images = {
   bg: './img/bg4.png',
-  sprite: './img/Character5.png'
+  sprite: './img/Character5.png',
+  gameover: './img/gameover.png'
 }
 
 function Board() {
@@ -96,7 +99,7 @@ function Hero() {
      this.position +=2.02
     if(this.position <1)
        this.position =1
-    ctx.drawImage(this.img, this.x,this.y,this.w, this.h, 10, this.position, 100, 100);
+    ctx.drawImage(this.img, this.x,this.y,this.w, this.h, 120, this.position, 100, 100);
     if (frames % 4 === 0) {
       this.aux++
       if (this.aux === 9) this.aux = 0
@@ -122,13 +125,22 @@ function Hero() {
     case 8: 
       return this.x = 4200
   }
+
 }
 this.ifTouched = function(item){
-  return (10 < item.x + 70)  && 
-         (10 + this.wc  > item.x+60)     &&
+  return (120 < item.x + 70)  && 
+         (120 + this.wc  > item.x+60)     &&
         (this.position < item.y + 70 )&&
         (this.position + this.hc > item.y+30)
 }
+  this.setY =function(){this.position-=1
+    
+   
+  }
+  this.drawMuerto = function(){
+    ctx.drawImage(muerto,120,this.position,100,100)
+  }
+
 }
 
 
@@ -169,11 +181,8 @@ if(frames%30 === 0){
   
 }
 }
-function gameover(){
-  clearInterval(interval)
-  
 
-}
+
 //dibujar comida
 function drawTrucs() {
   generateTrucks()
@@ -192,12 +201,13 @@ function checkCollision(){
         console.log(puntos)
         trucks.splice(index,1)
       }else{
-        
-        gameover()
-        ctx.clearRect(10,hero.position,100,100)
+        //x.pause()
+        ctx.clearRect(120,hero.position,100,100)
         fondo.draw()
+        gameover()
         
-        ctx.drawImage(muerto,10,hero.position,100,100)
+        
+        
       }
       
       }
@@ -205,13 +215,15 @@ function checkCollision(){
         
     })
     }
-//objeto 1 = hero
-//objerto 2 = trucks 
 
-  // The objects are touching
+
   
+  function playAudio() {    
+  }
+  function pauseAudio() { 
+  } 
 
-// update
+// update //
 function update() {
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -226,19 +238,66 @@ fondo.drawScore()
 
 
 function start() {
- interval = setInterval(update, 1000/60)
-    
-  
+  if(!interval){
+  clearInterval(interval2)
+  interval2 = null
+   hero = new Hero()
+   frames = 0;
+   puntos =0;
+  trucks = []
+  x.play()
+    song2.pause()
+    x.currentTime = 0
+  interval = setInterval(update, 1000/60)
+ }
  
 }
 
 var fondo = new Board();
 var hero = new Hero();
-start();
+var interval2 
+var gamoim = new Image()
+gamoim.srcset = images.gameover
 
+
+
+function gameover(){
+  clearInterval(interval)
+    interval = null
+    x.pause()
+    song2.currentTime=0
+    song2.play()
+    interval2 = setInterval(function (){
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+    fondo.draw()
+    hero.setY()
+    hero.drawMuerto()
+    console.log("entro")
+    ctx.drawImage(gamoim,500,200,200,200)
+
+    
+
+
+   },1000/60)
+  
+   
+}
 
 addEventListener('keydown', (e) => {
   if (e.keyCode === 32)
   hero.position -= 50
-})
+  
+  })
+
+  addEventListener('keydown', (e) => {
+    if (e.keyCode === 13)
+          start()
+          
+          
+          
+      })
+
+
+
+
 
