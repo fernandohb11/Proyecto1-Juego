@@ -54,7 +54,8 @@ var food= [ 'img/food/milkshake.png',
 var images = {
   bg: './img/bg4.png',
   sprite: './img/Character5.png',
-  gameover: './img/gameover.png'
+  gameover: './img/gameover.png',
+  bg2:'./img/bg2.png'
 }
 
 function Board() {
@@ -208,6 +209,7 @@ function checkCollision(){
         
         
         
+        
       }
       
       }
@@ -236,9 +238,30 @@ fondo.drawScore()
 
 }
 
+window.onload =function(){
+  drawCover()
+}
+function drawCover(){
+  var img = new Image()
+  img.src = images.bg2
+  img.onload = function(){
+      
 
+      ctx.drawImage(img, 0,0,1200,600)
+      ctx.font = "24px Avenir"
+       ctx.fillText("Presiona enter para comenzar" , 450,150)
+       ctx.font = "Bold 24px Avenir"
+       ctx.fillText("Instrucciones: Utiliza la barra espaciadora para saltar " , 290,180)
+       ctx.fillText("y poder comer cosas deliciosas " , 420,210),
+       ctx.fillText("¡Cuidado con las chanclas, evitalas a toda costa!" , 330,240)
+       // 
+       //Cuidado con las chanclas, evitalas a toda costa."
+  }
+}
 function start() {
+  
   if(!interval){
+    
   clearInterval(interval2)
   interval2 = null
    hero = new Hero()
@@ -246,9 +269,11 @@ function start() {
    puntos =0;
   trucks = []
   x.play()
-    song2.pause()
-    x.currentTime = 0
+  song2.pause()
+  x.currentTime = 0
+  
   interval = setInterval(update, 1000/60)
+  
  }
  
 }
@@ -257,7 +282,9 @@ var fondo = new Board();
 var hero = new Hero();
 var interval2 
 var gamoim = new Image()
+var bg2 =new Image()
 gamoim.srcset = images.gameover
+//bg2.srcset = images.bg2
 
 
 
@@ -272,8 +299,10 @@ function gameover(){
     fondo.draw()
     hero.setY()
     hero.drawMuerto()
-    console.log("entro")
     ctx.drawImage(gamoim,500,200,200,200)
+    ctx.font = "30px Arial";
+        ctx.fillText("¡Lolo tiene mas hambre!",450,400); 
+        ctx.fillText("Presiona Enter para jugar otra vez",380,460); 
 
     
 
